@@ -135,7 +135,7 @@ class BeneficiaireController extends Controller
      */
     public function show($id)
     {
-        $beneficiaire = Beneficiaire::with('region')->with('departement')->with('commune')->with('projets')->with('transaction')->get()->find($id);
+        $beneficiaire = Beneficiaire::with('region')->with('departement')->with('commune')->with('projets')->with('transactions')->get()->find($id);
         if (is_null($beneficiaire))
         {
    /*          return $this->sendError('Product not found.'); */
