@@ -46,7 +46,7 @@ class PaiementController extends Controller
             ->json($validator->errors());
         }
         $Paiement = Paiement::create($input);
-        return response()->json(["success" => true, "message" => "Opérateur créé avec succès.", "data" => $Paiement]);
+        return response()->json(["success" => true, "message" => "Paiement créé avec succès.", "data" => $Paiement]);
     }
     /**
      * Display the specified resource.
@@ -86,7 +86,7 @@ class PaiementController extends Controller
         $Paiement->save();
 
         return response()
-            ->json(["success" => true, "message" => "Opérateur modifié avec succès.", "data" => $Paiement]);
+            ->json(["success" => true, "message" => "Paiement modifié avec succès.", "data" => $Paiement]);
     }
     /**
      * Remove the specified resource from storage.
@@ -98,6 +98,6 @@ class PaiementController extends Controller
     {
         $Paiement->delete();
         return response()
-            ->json(["success" => true, "message" => "Opérateur supprimé avec succès.", "data" => $Paiement]);
+            ->json(["success" => true, "message" => "Paiement supprimé avec succès.", "data" => $Paiement]);
     }
 }
