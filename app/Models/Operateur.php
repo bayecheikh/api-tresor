@@ -21,6 +21,6 @@ class Operateur extends Model
     ];
 
     public function transactions() {
-        return $this->belongsToMany(Transaction::class,'transactions_operateurs');          
+        return $this->belongsToMany(Transaction::class,'transactions_operateurs','transaction_id','operateur_id');          
     }
 }

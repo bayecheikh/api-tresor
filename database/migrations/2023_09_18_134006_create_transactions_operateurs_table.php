@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('transactions_operateurs', function (Blueprint $table) {
             $table->unsignedInteger('transaction_id');
             $table->unsignedInteger('operateur_id');
-            $table->primary(['transaction_id','operateur_id']);
+            $table->primary(['transaction_id','operateur_id'],'transactions_operateurs');
             $table->timestamps();
         });
     }

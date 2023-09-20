@@ -34,6 +34,6 @@ class Beneficiaire extends Model
     }
 
     public function transactions() {
-        return $this->belongsToMany(Transaction::class,'transactions_beneficiaires');          
+        return $this->belongsToMany(Transaction::class,'transactions_beneficiaires','transaction_id','beneficiaire_id');          
     }
 }

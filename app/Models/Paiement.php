@@ -20,6 +20,6 @@ class Paiement extends Model
     ];
 
     public function transactions() {
-        return $this->belongsToMany(Transaction::class,'transactions_paiements');          
+        return $this->belongsToMany(Transaction::class,'transactions_paiements','transaction_id','paiement_id');          
     }
 }

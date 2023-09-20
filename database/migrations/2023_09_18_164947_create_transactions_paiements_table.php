@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('transactions_paiements', function (Blueprint $table) {
             $table->unsignedInteger('transaction_id');
             $table->unsignedInteger('paiement_id');
-            $table->primary(['transaction_id','paiement_id']);
+            $table->primary(['transaction_id','paiement_id'],'transactions_paiements');
             $table->timestamps();
         });
     }

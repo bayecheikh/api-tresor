@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('transactions_beneficiaires', function (Blueprint $table) {
             $table->unsignedInteger('transaction_id');
             $table->unsignedInteger('beneficiaire_id');
-            $table->primary(['transaction_id','beneficiaire_id']);
+            $table->primary(['transaction_id','beneficiaire_id'],'transactions_beneficiaires');
             $table->timestamps();
         });
     }

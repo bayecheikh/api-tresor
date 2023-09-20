@@ -34,12 +34,12 @@ class Transaction extends Model
         'state',
     ];
     public function beneficiaire() {
-        return $this->belongsToMany(Beneficiaire::class,'transactions_beneficiaires');          
+        return $this->belongsToMany(Beneficiaire::class,'transactions_beneficiaires','transaction_id','beneficiaire_id');          
     }
     public function operateur() {
-        return $this->belongsToMany(Operateur::class,'transactions_operateurs');          
+        return $this->belongsToMany(Operateur::class,'transactions_operateurs','transaction_id','operateur_id');          
     }
     public function paiement() {
-        return $this->belongsToMany(Operateur::class,'transactions_paiements');          
+        return $this->belongsToMany(Operateur::class,'transactions_paiements','transaction_id','paiement_id');          
     }
 }
