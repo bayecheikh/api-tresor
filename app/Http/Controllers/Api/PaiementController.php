@@ -38,7 +38,7 @@ class PaiementController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        $validator = Validator::make($input, ['libelle' => 'required','slug' => 'required']);
+        $validator = Validator::make($input, ['libelle' => 'required|unique:paiements','slug' => 'required|unique:paiements']);
         if ($validator->fails())
         {
             
@@ -76,7 +76,7 @@ class PaiementController extends Controller
     public function update(Request $request, Paiement $Paiement)
     {
         $input = $request->all();
-        $validator = Validator::make($input, ['libelle' => 'required']);
+        $validator = Validator::make($input, ['libelle' =>  'required|unique:operateurs']);
         if ($validator->fails())
         {
             return response() ->json($validator->errors());

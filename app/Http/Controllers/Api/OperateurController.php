@@ -38,7 +38,7 @@ class OperateurController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        $validator = Validator::make($input, ['libelle' => 'required','slug' => 'required']);
+        $validator = Validator::make($input, ['libelle' => 'required|unique:operateurs','slug' => 'required|unique:operateurs']);
         if ($validator->fails())
         {
             //return $this->sendError('Validation Error.', $validator->errors());
@@ -76,7 +76,7 @@ class OperateurController extends Controller
     public function update(Request $request, Operateur $Operateur)
     {
         $input = $request->all();
-        $validator = Validator::make($input, ['libelle' => 'required']);
+        $validator = Validator::make($input, ['libelle' =>  'required|unique:operateurs']);
         if ($validator->fails())
         {
             return response() ->json($validator->errors());
