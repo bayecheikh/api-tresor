@@ -122,10 +122,10 @@ class UserController extends Controller
         $email = $input['email'];
        
 
-        if(isset($input['secteur_id'])){
+       /*  if(isset($input['secteur_id'])){
             $secteurObj = SousSecteur::where('id',$input['secteur_id'])->first();
             $user->secteur()->attach($secteurObj);
-        }
+        } */
 
         $array_roles = $request->roles;
 
@@ -191,7 +191,7 @@ class UserController extends Controller
 
         $array_roles = $request->roles;
         $old_roles = $user->roles();
-        $old_secteurs = $user->secteur();
+        /* $old_secteurs = $user->secteur();
 
         if(isset($input['secteur_id'])){
             
@@ -202,7 +202,7 @@ class UserController extends Controller
             $secteurObj = SousSecteur::where('id',$input['secteur_id'])->first();
             $user->secteur()->attach($secteurObj);
         }
-
+ */
         if(!empty($array_roles)){
             foreach($old_roles as $role){
                 $roleObj = Role::where('id',$role)->first();

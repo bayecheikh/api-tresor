@@ -53,6 +53,9 @@ use App\Http\Controllers\Api\RechercheAnnuaireController;
 use App\Http\Controllers\Api\ExportAnnuaireController;
 use App\Http\Controllers\Api\SmsAnnuaireController;
 use App\Http\Controllers\Api\TypeMilitantController;
+use App\Http\Controllers\Api\OperateurController;
+use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\PaiementController;
 
 
 /*
@@ -152,6 +155,16 @@ Route::middleware('auth:api')->group(function () {
     Route::get('beneficiaire-multiple-search/{term}', [BeneficiaireController::class, 'beneficiaireMultipleSearch']);
     Route::get('beneficiaire-by-term/{term}', [BeneficiaireController::class, 'beneficiaireByTerm']);
     Route::get('beneficiaireByCommune/{term}', [BeneficiaireController::class, 'beneficiaireByCommune']);
+
+    /**Gestion des operateurss */
+    Route::resource('operateurs', OperateurController::class);
+
+     /**Gestion des paiement */
+     Route::resource('paiements', PaiementController::class);
+
+    /**Gestion des transactions */
+    Route::resource('transactions', TransactionController::class);
+    Route::get('transaction-multiple-search/{term}', [TransactionController::class, 'transactionMultipleSearch']);
 
     /**Gestion des projets */
     Route::resource('projets', ProjetController::class);

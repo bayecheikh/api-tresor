@@ -11,6 +11,7 @@ use App\Models\Region;
 use App\Models\Departement;
 use App\Models\Commune;
 use App\Models\Beneficiaire;
+use App\Models\Transaction;
 
 class BeneficiaireController extends Controller
 {
@@ -27,7 +28,7 @@ class BeneficiaireController extends Controller
     public function index()
     {
  
-        $beneficiaires = Beneficiaire::with('region')->with('departement')->with('commune')->with('projets')->paginate(10);       
+        $beneficiaires = Beneficiaire::with('region')->with('departement')->with('commune')->with('projets')->with('transactions')->paginate(10);       
         $total = $beneficiaires->total();
 
         return response()->json(["success" => true, "message" => "Liste des beneficiaires", "data" => $beneficiaires,"total"=> $total]);       
@@ -134,7 +135,7 @@ class BeneficiaireController extends Controller
      */
     public function show($id)
     {
-        $beneficiaire = Beneficiaire::with('region')->with('departement')->with('commune')->with('projets')->get()->find($id);
+        $beneficiaire = Beneficiaire::with('region')->with('departement')->with('commune')->with('projets')->with('transaction')->get()->find($id);
         if (is_null($beneficiaire))
         {
    /*          return $this->sendError('Product not found.'); */

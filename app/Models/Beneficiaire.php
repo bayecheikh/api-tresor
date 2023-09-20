@@ -32,4 +32,8 @@ class Beneficiaire extends Model
     public function projets() {
         return $this->belongsToMany(Projet::class,'beneficiaires_projets');          
     }
+
+    public function transactions() {
+        return $this->belongsToMany(Transaction::class,'transactions_beneficiaires');          
+    }
 }
