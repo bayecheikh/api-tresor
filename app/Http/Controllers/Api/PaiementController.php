@@ -41,7 +41,7 @@ class PaiementController extends Controller
         $validator = Validator::make($input, ['libelle' => 'required','slug' => 'required']);
         if ($validator->fails())
         {
-            //return $this->sendError('Validation Error.', $validator->errors());
+            
             return response()
             ->json($validator->errors());
         }
