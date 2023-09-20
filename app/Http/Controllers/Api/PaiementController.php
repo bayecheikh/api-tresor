@@ -44,6 +44,7 @@ class PaiementController extends Controller
             return response()
             ->json($validator->errors());
         }
+        $input['status'] = 'actif';
         $Paiement = Paiement::create($input);
         return response()->json(["success" => true, "message" => "Opérateur créé avec succès.", "data" => $Paiement]);
     }
