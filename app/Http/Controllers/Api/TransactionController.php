@@ -27,10 +27,10 @@ class TransactionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
  
-        $Transactions = Transaction::with('beneficiaire')->with('operateur')->with('paiement')->paginate(10);       
+        $Transactions = Transaction::Where('status','like', '%'.$request->status.'%')->with('beneficiaire')->with('operateur')->with('paiement')->paginate(10);       
         $total = $Transactions->total();
 
         return response()->json(["success" => true, "message" => "Liste des Transactions", "data" => $Transactions,"total"=> $total]);       
@@ -52,6 +52,7 @@ class TransactionController extends Controller
             ->orWhere('slug_paiement','like', '%'.$term.'%')
             ->orWhere('libelle_operateur','like', '%'.$term.'%')
             ->orWhere('slug_operateur','like', '%'.$term.'%')
+            ->orWhere('status','like', '%'.$term.'%')
             ->with('beneficiaire')->with('operateur')->paginate(20);
         $total = $Transactions->total();
         return response()->json(["success" => true, "message" => "Liste des Transactions", "data" => $Transactions,"total"=> $total]);   
