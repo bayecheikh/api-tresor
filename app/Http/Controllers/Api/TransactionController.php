@@ -99,7 +99,7 @@ class TransactionController extends Controller
         }else{
             $beneficiaire = Beneficiaire::create(
                 [
-                    'numero_cin' => $input['numero_cin'],
+                    'numero_cin' => $input['cni_beneficiaire'],
                     'nom_beneficiaire' => $input['nom_beneficiaire'],
                     'prenom_beneficiaire' => $input['prenom_beneficiaire'],
                     'adresse_beneficiaire' => $input['adresse_beneficiaire'],
