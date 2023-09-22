@@ -269,11 +269,11 @@ class TransactionController extends Controller
         $Transaction = Transaction::where('id',$input['id'])->first();
 
         if ($request->user()->hasRole('comptable')){
-            $Transaction->state = 'validation_comptable';
+            $Transaction->state = 'VALIDATION_COMPTABLE';
             $Transaction->status = 'soumis';
         }
         if ($request->user()->hasRole('tresorier')){
-            $Transaction->state = 'validation_tresorier';
+            $Transaction->state = 'VALIDATION_TRESORIER';
             $Transaction->status = 'valide';
         }
         $Transaction->save();
@@ -295,7 +295,7 @@ class TransactionController extends Controller
         $Transaction = Transaction::where('id',$input['id'])->first();
 
         if ($request->user()->hasRole('tresorier')){          
-            $Transaction->state = 'init';
+            $Transaction->state = 'INIT';
             $Transaction->status = 'rejete';          
             $Transaction->motif_rejet = $motif_rejet;          
         }
