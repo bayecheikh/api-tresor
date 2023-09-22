@@ -31,11 +31,16 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         if ($request->user()->hasPermission('all-transactions')) {
-            $Transactions = Transaction::Where('status','like', '%'.$request->status.'%')->with('beneficiaire')->with('operateur')->with('paiement')->paginate(20);
+            if ($request->user()->hasPermission('brouillon')){
+                $Transactions = Transaction::Where('status','like', '%'.$request->status.'%')->with('beneficiaire')->with('operateur')->with('paiement')->paginate(20);
+            }
+            else{
+                $Transactions = Transaction::Where('status','like', '%'.$request->status.'%')->Where('status','!=', 'brouillon')->with('beneficiaire')->with('operateur')->with('paiement')->paginate(20);
+            }
         }
         else{           
             $user_id = $request->user()->id;
-            $Transactions = Transaction::where('user_id', $user_id)->Where('status','like', '%'.$request->status.'%')->with('beneficiaire')->with('operateur')->with('paiement')->paginate(20);                      
+            $Transactions = Transaction::Where('user_id', $user_id)->where('status','like', '%'.$request->status.'%')->with('beneficiaire')->with('operateur')->with('paiement')->paginate(20);                      
         }      
         $total = $Transactions->total();
 
