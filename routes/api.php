@@ -165,6 +165,8 @@ Route::middleware('auth:api')->group(function () {
     /**Gestion des transactions */
     Route::resource('transactions', TransactionController::class);
     Route::get('transaction-multiple-search/{term}', [TransactionController::class, 'transactionMultipleSearch']);
+    Route::post('validation_transaction', [TransactionController::class, 'validation_transaction']);
+    Route::post('rejet_transaction', [TransactionController::class, 'rejet_transaction']);
 
     /**Gestion des projets */
     Route::resource('projets', ProjetController::class);

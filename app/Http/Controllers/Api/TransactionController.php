@@ -102,17 +102,26 @@ class TransactionController extends Controller
             $beneficiaireObj = Beneficiaire::where('id',$input['id_beneficiaire'])->first();
             $Transaction-> beneficiaire()->attach( $beneficiaireObj);           
         }else{
-            $beneficiaire = Beneficiaire::create(
-                [
-                    'numero_cin' => $input['cni_beneficiaire'],
-                    'nom_beneficiaire' => $input['nom_beneficiaire'],
-                    'prenom_beneficiaire' => $input['prenom_beneficiaire'],
-                    'adresse_beneficiaire' => $input['adresse_beneficiaire'],
-                    'telephone_beneficiaire' => $input['telephone_beneficiaire']
-                ]
-            );
-            $beneficiaireObj = Beneficiaire::where('id',$beneficiaire->id)->first();
-            $Transaction-> beneficiaire()->attach( $beneficiaireObj); 
+            if(isset($input['telephone_beneficiaire'])){
+                $beneficiaireObj = Beneficiaire::where('telephone_beneficiaire',$input['telephone_beneficiaire'])->first();
+                if($beneficiaireObj){
+                    $Transaction-> beneficiaire()->attach( $beneficiaireObj); 
+                }
+                else{
+                    $beneficiaire = Beneficiaire::create(
+                        [
+                            'numero_cin' => $input['cni_beneficiaire'],
+                            'nom_beneficiaire' => $input['nom_beneficiaire'],
+                            'prenom_beneficiaire' => $input['prenom_beneficiaire'],
+                            'adresse_beneficiaire' => $input['adresse_beneficiaire'],
+                            'telephone_beneficiaire' => $input['telephone_beneficiaire']
+                        ]
+                    );
+                    $beneficiaireObj = Beneficiaire::where('id',$beneficiaire->id)->first();
+                    $Transaction-> beneficiaire()->attach( $beneficiaireObj); 
+                }
+            }
+            
         }
 
         if(isset($input['id_operateur'])){          
@@ -156,7 +165,7 @@ class TransactionController extends Controller
     public function update(Request $request, Transaction $Transaction)
     {
         $input = $request->all();
-        $validator = Validator::make($input, ['reference_transaction'=> 'required',
+        $validator = Validator::make($input, [
             'prenom_beneficiaire'=> 'required',
             'nom_beneficiaire'=> 'required',
             'telephone_beneficiaire'=> 'required',
@@ -244,5 +253,54 @@ class TransactionController extends Controller
         $Transaction->delete();
         return response()
             ->json(["success" => true, "message" => "Transaction supprimée avec succès.", "data" => $Transaction]);
+    }
+
+    /////////////////////////////////////////   WORKFLOW DE VALIDATION/ ///////////////////////////
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function validation_transaction(Request $request)
+    {
+        $input = $request->all();
+        
+
+        $Transaction = Transaction::where('id',$input['id'])->first();
+
+        if ($request->user()->hasRole('comptable')){
+            $Transaction->state = 'validation_comptable';
+            $Transaction->status = 'soumis';
+        }
+        if ($request->user()->hasRole('tresorier')){
+            $Transaction->state = 'validation_tresorier';
+            $Transaction->status = 'valide';
+        }
+        $Transaction->save();
+
+        return response()->json(["success" => true, "message" => "Transaction validée avec succès", "data" =>$Transaction]);  
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function rejet_transaction(Request $request)
+    {
+        $input = $request->all();
+        $motif_rejet = $input['motif_rejet'];
+        
+
+        $Transaction = Transaction::where('id',$input['id'])->first();
+
+        if ($request->user()->hasRole('tresorier')){          
+            $Transaction->state = 'init';
+            $Transaction->status = 'rejete';          
+            $Transaction->motif_rejet = $motif_rejet;          
+        }
+        $Transaction->save();
+
+        return response()->json(["success" => true, "message" => "Transaction rejeté", "data" =>$Transaction]);  
     }
 }
