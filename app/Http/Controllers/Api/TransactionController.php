@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Permissions\HasPermissionsTrait;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\Role;
@@ -29,8 +30,13 @@ class TransactionController extends Controller
      */
     public function index(Request $request)
     {
- 
-        $Transactions = Transaction::Where('status','like', '%'.$request->status.'%')->with('beneficiaire')->with('operateur')->with('paiement')->paginate(10);       
+        if ($request->user()->hasRole('super_admin') || $request->user()->hasRole('admin')) {
+            $Transactions = Transaction::Where('status','like', '%'.$request->status.'%')->with('beneficiaire')->with('operateur')->with('paiement')->paginate(20);
+        }
+        else{           
+            $user_id = $request->user()->id;
+            $Transactions = Transaction::where('user_id', $user_id)->Where('status','like', '%'.$request->status.'%')->with('beneficiaire')->with('operateur')->with('paiement')->paginate(20);                      
+        }      
         $total = $Transactions->total();
 
         return response()->json(["success" => true, "message" => "Liste des Transactions", "data" => $Transactions,"total"=> $total]);       
@@ -90,6 +96,18 @@ class TransactionController extends Controller
         if(isset($input['id_beneficiaire'])){          
             $beneficiaireObj = Beneficiaire::where('id',$input['id_beneficiaire'])->first();
             $Transaction-> beneficiaire()->attach( $beneficiaireObj);           
+        }else{
+            $beneficiaire = Beneficiaire::create(
+                [
+                    'numero_cin' => $input['numero_cin'],
+                    'nom_beneficiaire' => $input['nom_beneficiaire'],
+                    'prenom_beneficiaire' => $input['prenom_beneficiaire'],
+                    'adresse_beneficiaire' => $input['adresse_beneficiaire'],
+                    'telephone_beneficiaire' => $input['telephone_beneficiaire']
+                ]
+            );
+            $beneficiaireObj = Beneficiaire::where('id',$beneficiaire->id)->first();
+            $Transaction-> beneficiaire()->attach( $beneficiaireObj); 
         }
 
         if(isset($input['id_operateur'])){          

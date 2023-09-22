@@ -106,7 +106,7 @@ class InvestissementController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function investissementMultipleSearch($term)
+    public function investissementMultipleSearch(Request $request, $term)
     {
         if ($request->user()->hasRole('super_admin') || $request->user()->hasRole('admin_dprs')) {
             $investissements = Investissement::where('id', 'like', '%'.$term.'%')->orWhere('nom_investissement', 'like', '%'.$term.'%')
@@ -151,7 +151,7 @@ class InvestissementController extends Controller
                 ->with('ligne_financements')
                 ->with('fichiers')
                 ->whereHas('source', function($q) use ($source_id){
-                    $q->where('id', $sourcee_id);
+                    $q->where('id', $source_id);
                 })->paginate(10);
             }
             else{
