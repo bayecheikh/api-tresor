@@ -30,7 +30,7 @@ class TransactionController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->user()->hasRole('super_admin') || $request->user()->hasRole('admin')) {
+        if ($request->user()->hasPermission('all-transactions')) {
             $Transactions = Transaction::Where('status','like', '%'.$request->status.'%')->with('beneficiaire')->with('operateur')->with('paiement')->paginate(20);
         }
         else{           
