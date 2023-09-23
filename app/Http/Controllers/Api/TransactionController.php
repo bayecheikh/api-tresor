@@ -96,6 +96,12 @@ class TransactionController extends Controller
             return response()
             ->json($validator->errors());
         }
+        if ($request->user()->hasRole('comptable')){
+           if($input['status']=='soumis'){
+                $input['state'] = 'VALIDATION_COMPTABLE';
+           }
+        }
+        
         $Transaction = Transaction::create($input);
 
         if(isset($input['id_beneficiaire'])){          
