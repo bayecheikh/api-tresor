@@ -32,15 +32,15 @@ class TransactionController extends Controller
     {
         if ($request->user()->hasPermission('all-transactions')) {
             if ($request->user()->hasPermission('brouillon')){
-                $Transactions = Transaction::Where('status','like', '%'.$request->status.'%')->with('beneficiaire')->with('operateur')->with('paiement')->paginate(20);
+                $Transactions = Transaction::Where('status','like', '%'.$request->status.'%')->with('beneficiaire')->with('operateur')->with('paiement')->paginate(10);
             }
             else{
-                $Transactions = Transaction::Where('status','like', '%'.$request->status.'%')->Where('status','!=', 'brouillon')->with('beneficiaire')->with('operateur')->with('paiement')->paginate(20);
+                $Transactions = Transaction::Where('status','like', '%'.$request->status.'%')->Where('status','!=', 'brouillon')->with('beneficiaire')->with('operateur')->with('paiement')->paginate(10);
             }
         }
         else{           
             $user_id = $request->user()->id;
-            $Transactions = Transaction::Where('user_id', $user_id)->where('status','like', '%'.$request->status.'%')->with('beneficiaire')->with('operateur')->with('paiement')->paginate(20);                      
+            $Transactions = Transaction::Where('user_id', $user_id)->where('status','like', '%'.$request->status.'%')->with('beneficiaire')->with('operateur')->with('paiement')->paginate(10);                      
         }      
         $total = $Transactions->total();
 
@@ -101,7 +101,7 @@ class TransactionController extends Controller
                 $input['state'] = 'VALIDATION_COMPTABLE';
            }
         }
-        
+
         $Transaction = Transaction::create($input);
 
         if(isset($input['id_beneficiaire'])){          
